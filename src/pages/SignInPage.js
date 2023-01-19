@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Container } from "../components/Container";
 import logo from "../assets/images/logo.svg";
@@ -7,29 +7,39 @@ import { ButtonForm } from "../components/Buttonform";
 import { Link } from "react-router-dom";
 
 export default function SignInPage() {
+  const [signInForm, setsignInForm] = useState({
+    email: "",
+    password: "",
+  });
   return (
     <>
       <Container>
         <Logo src={logo} alt="logo" />
         <Form>
           <Input
+            name="email"
             placeholder="E-mail"
             data-test="email"
-            
-            
+            value={signInForm.email}
+            onChange={(e) =>
+              setsignInForm({ ...signInForm, [e.target.name]: e.target.value })
+            }
             type="email"
           />
           <Input
+            name="password"
             placeholder="Senha"
             data-teste="password"
-            
-            
+            value={signInForm.password}
+            onChange={(e) =>
+              setsignInForm({ ...signInForm, [e.target.name]: e.target.value })
+            }
             type="password"
           />
-          <ButtonForm>Entrar</ButtonForm>
+          <ButtonForm data-test="sign-in-submit">Entrar</ButtonForm>
         </Form>
-        <Link>
-            <LinkSign>Não possuí uma conta? Cadastre-se</LinkSign>
+        <Link to={"/signUp"}>
+          <LinkSign>Não possuí uma conta? Cadastre-se</LinkSign>
         </Link>
       </Container>
     </>
@@ -48,7 +58,7 @@ const Form = styled.form`
 `;
 
 const LinkSign = styled.h3`
-    margin-top: 20px;
-    font-size: 17px;
-    line-height: 16px;
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 16px;
 `;
