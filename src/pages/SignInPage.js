@@ -5,17 +5,43 @@ import logo from "../assets/images/logo.svg";
 import { Input } from "../components/Input";
 import { ButtonForm } from "../components/Buttonform";
 import { Link } from "react-router-dom";
-
+import { BASE_URL } from "../constants/urls";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function SignInPage() {
   const [signInForm, setsignInForm] = useState({
     email: "",
     password: "",
   });
+  const { userToken, setUserToken, userNome, setUserNome } =
+    useContext(UserContext);
+  const navigate = useNavigate();
+
+  function logRequest(e) {
+    e.preventDefault();
+
+    axios
+      .post(`${BASE_URL}/sign-in`, signInForm)
+      ?.then((res) => {
+        console.log("logou", res);
+        localStorage.setItem("tokenData", JSON.stringify(res.token));
+        setUserToken(JSON.parse(localStorage.getItem("tokenData")));
+        setUserNome(res);
+        navigate("/wallet");
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        alert(err.response.data.message);
+      });
+  }
+
   return (
     <>
       <Container>
         <Logo src={logo} alt="logo" />
-        <Form>
+        <Form onSubmit={logRequest}>
           <Input
             name="email"
             placeholder="E-mail"

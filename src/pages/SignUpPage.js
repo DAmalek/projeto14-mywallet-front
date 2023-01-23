@@ -5,20 +5,44 @@ import logo from "../assets/images/logo.svg";
 import { Input } from "../components/Input";
 import { ButtonForm } from "../components/Buttonform";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../constants/urls";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function SignUpPage() {
   const [signUpForm, setsingUpForm] = useState({
     name: "",
     email: "",
     password: "",
-    cPassword: "",
+    Cpassword: "",
   });
+  const body = {
+    nome: signUpForm.nome,
+    email: signUpForm.email,
+    senha: signUpForm.senha,
+    Cpassword: signUpForm.Cpassword,
+  };
+  const navigate = useNavigate();
+  function signRequest(e) {
+    e.preventDefault();
+
+    axios
+      .post(`${BASE_URL}/sign-up`, body)
+      .then((resp) => {
+        console.log(resp);
+
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
 
   return (
     <>
       <Container>
         <Logo src={logo} alt="logo" />
-        <Form>
+        <Form onSubmit={signRequest}>
           <Input
             name="name"
             placeholder="Nome"
@@ -40,7 +64,7 @@ export default function SignUpPage() {
             type="email"
           />
           <Input
-            name="email"
+            name="password"
             placeholder="Senha"
             data-test="password"
             value={signUpForm.password}
@@ -50,10 +74,10 @@ export default function SignUpPage() {
             type="password"
           />
           <Input
-            name="email"
+            name="Cpassword"
             placeholder="Confirme a Senha"
             data-test="conf-password"
-            value={signUpForm.cPassword}
+            value={signUpForm.Cpassword}
             onChange={(e) =>
               setsingUpForm({ ...signUpForm, [e.target.name]: e.target.value })
             }

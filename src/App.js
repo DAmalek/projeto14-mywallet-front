@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./assets/styles/GlobalStyle";
+import { UserContextProvider } from "./context/UserContext";
 import DepositPage from "./pages/DepositPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -12,13 +13,15 @@ export default function App() {
     <>
       <BrowserRouter>
         <GlobalStyle />
-        <Routes>
-          <Route path="/" element={<SignInPage />} />
-          <Route path="/signUp" element={<SignUpPage />} />
-          <Route path="/wallet" element={<WalletPage />} />
-          <Route path="/deposit" element={<DepositPage />} />
-          <Route path="/withdraw" element={<WithdrawPage />} />
-        </Routes>
+        <UserContextProvider>
+          <Routes>
+            <Route path="/" element={<SignInPage />} />
+            <Route path="/signUp" element={<SignUpPage />} />
+            <Route path="/wallet" element={<WalletPage />} />
+            <Route path="/deposit" element={<DepositPage />} />
+            <Route path="/withdraw" element={<WithdrawPage />} />
+          </Routes>
+        </UserContextProvider>
       </BrowserRouter>
     </>
   );
